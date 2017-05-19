@@ -127,4 +127,16 @@ class FileVersion implements FileVersionInterface {
     return in_array($protocol, $by_passed_protocols);
   }
 
+  public function getInvalidQueryParameterNames() {
+    $invalid_params = [
+      'q',
+      'itok',
+      'file',
+    ];
+
+    // @todo Add hook_alter
+
+    return $invalid_params;
+  }
+
 }

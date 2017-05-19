@@ -12,4 +12,6 @@ interface FileVersionInterface {
 
   public function isProtocolByPassed($protocol);
 
+  public function getInvalidQueryParameterNames();
+
 }

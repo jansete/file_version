@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class SettingsForm
- *
- * @todo validate get_parameter_name to be different than q, itok and others.
  */
 class SettingsForm extends ConfigFormBase {
 
@@ -132,6 +130,24 @@ class SettingsForm extends ConfigFormBase {
          ->save();
 
     parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $get_paramater_name = $form_state->getValue('get_parameter_name');
+    $invalid_params = $this->fileVersion->getInvalidQueryParameterNames();
+
+    if (in_array($get_paramater_name, $invalid_params)) {
+      $form_state->setError(
+        $form['get_parameter_name'],
+        $this->t('Parameter name can\'t be one of @invalid_params.',
+          [
+            '@invalid_params' => implode(', ', $invalid_params),
+          ])
+      );
+    }
   }
 
 }
