@@ -51,16 +51,20 @@ class FileVersion implements FileVersionInterface {
           ($file_version_settings->get('enable_image_styles') && $this->isImageStyleUri($original_uri))
       ||  $file_version_settings->get('enable_all_files')
     ) {
-      $url = UrlHelper::parse($uri);
+      $extension = pathinfo($uri, PATHINFO_EXTENSION);
+      $blacklist_extensions = $this->getBlacklistExtensions();
 
-      if (empty($url['query'][$get_parameter_name])) {
-        $query = array(
-          $get_parameter_name => $this->getFileVersionToken($original_uri)
-        );
+      if (!in_array($extension, $blacklist_extensions)) {
+        $url = UrlHelper::parse($uri);
 
-        $uri .= (strpos($uri, '?') !== FALSE ? '&' : '?') . UrlHelper::buildQuery($query);
+        if (empty($url['query'][$get_parameter_name])) {
+          $query = array(
+            $get_parameter_name => $this->getFileVersionToken($original_uri)
+          );
+
+          $uri .= (strpos($uri, '?') !== FALSE ? '&' : '?') . UrlHelper::buildQuery($query);
+        }
       }
-
     }
   }
 
@@ -78,11 +82,21 @@ class FileVersion implements FileVersionInterface {
   }
 
   private function getWhitelistExtensions() {
-    return [];
+    $extension_whitelist = $this->configFactory->get('file_version.settings')->get('extensions_whitelist');
+    return $this->parseCommaSeparatedList($extension_whitelist);
   }
 
   private function getBlacklistExtensions() {
-    return [];
+    $extension_blacklist = $this->configFactory->get('file_version.settings')->get('extensions_blacklist');
+    return $this->parseCommaSeparatedList($extension_blacklist);
+  }
+
+  private function parseCommaSeparatedList($string) {
+    $items = explode(',', $string);
+    $items = array_map('trim', $items);
+    return array_filter($items, function($value) {
+      return $value !== "";
+    });
   }
 
   /**

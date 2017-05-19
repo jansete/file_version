@@ -100,8 +100,7 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Extensions blacklist'),
       '#default_value' => $config->get('extensions_blacklist'),
       '#rows' => 5,
-      '#description' => $this->t('Extensions to exclude. IMPORTANT: Not implemented yet.'),
-      '#disabled' => TRUE,
+      '#description' => $this->t('Comma separated extensions to exclude. Must be different than whitelist extensions. Eg: png, jpeg, svg'),
     ];
 
     $form['extensions_whitelist'] = [
@@ -134,6 +133,8 @@ class SettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @todo validate blacklist extensions against whitelist
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $get_paramater_name = $form_state->getValue('get_parameter_name');
