@@ -9,11 +9,14 @@ You can configure:
 - Add token for image styles URLs
 - Add token for all files URLs
 - Define whitelist and blacklist of file extensions
+- Add styles prefix list to work with external file system like Amazon S3
+  (s3fs module)
 
-IMPORTANT: The module will generate absolute URLs for avoid encoding conflicts
-with GET query parameters.
-
-@todo Add only when files are called by file_create_url
+IMPORTANT:
+ -  The module will generate absolute URLs for avoid encoding conflicts
+    with GET query parameters.
+ -  The module use hook_file_url_alter(), so it works with core file/image
+    workflow and all the files using file_create_url().
 
 Example file URL without File Version:
 http://example.com/sites/default/files/2017-05/example.png
