@@ -75,12 +75,20 @@ class FileVersion implements FileVersionInterface {
    *
    * @param $path
    * @return bool
-   *
-   * @todo Add config to support other image style routes like s3fs module
    */
   private function isImageStyleUri($uri) {
+    $image_styles_url_prefixes = $this->getImageStylesUrlPrefixes();
     $target = file_uri_target($uri);
-    return strpos($target, 'styles/') === 0;
+    if ($target) {
+      // Escape all '/' chars to compose correct regular expression
+      $image_styles_url_prefixes = array_map(function($value) {
+        return preg_quote($value, '/');
+      }, $image_styles_url_prefixes);
+
+      $pattern = '/[^' . implode('|^', $image_styles_url_prefixes) . ']/';
+      return preg_match($pattern, $target);
+    }
+    return FALSE;
   }
 
   private function getWhitelistExtensions() {
@@ -99,6 +107,28 @@ class FileVersion implements FileVersionInterface {
     return array_filter($items, function($value) {
       return $value !== "";
     });
+  }
+
+  private function getImageStylesUrlPrefixes() {
+    $image_styles_url_prefixes = ['/styles/'];
+    $raw_config_prefixes = $this->configFactory->get('file_version.settings')->get('image_styles_url_prefix');
+    $config_prefixes = $this->parseLineSeparatedList($raw_config_prefixes);
+    $prefixes = array_merge($image_styles_url_prefixes, $config_prefixes);
+    return $this->formatImageStylesUrlPrefiex($prefixes);
+  }
+
+  private function parseLineSeparatedList($string) {
+    return explode("\r\n", $string);
+  }
+
+  private function formatImageStylesUrlPrefiex(array $prefixes) {
+    return array_map(function($value) {
+      $value = trim($value);
+      if (strpos($value, '/') === 0) {
+        $value = substr($value, 1);
+      }
+      return $value;
+    }, $prefixes);
   }
 
   /**
