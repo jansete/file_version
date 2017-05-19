@@ -95,6 +95,8 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    // @todo add extensions list fieldset
+
     $form['extensions_blacklist'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Extensions blacklist'),
@@ -132,8 +134,6 @@ class SettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
-   *
-   * @todo validate blacklist extensions against whitelist
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $get_paramater_name = $form_state->getValue('get_parameter_name');
@@ -145,6 +145,21 @@ class SettingsForm extends ConfigFormBase {
         $this->t('Parameter name can\'t be one of @invalid_params.',
           [
             '@invalid_params' => implode(', ', $invalid_params),
+          ])
+      );
+    }
+
+    $raw_extensions_blacklist = $form_state->getValue('extensions_blacklist');
+    $extensions_blacklist = $this->fileVersion->parseCommaSeparatedList($raw_extensions_blacklist);
+    $raw_extensions_whitelist = $form_state->getValue('extensions_whitelist');
+    $extensions_whitelist = $this->fileVersion->parseCommaSeparatedList($raw_extensions_whitelist);
+
+    if ($intersected_extensions = array_intersect($extensions_blacklist, $extensions_whitelist)) {
+      $form_state->setError(
+        $form['extensions_blacklist'],
+        $this->t('@intersected_extensions can be placed in whitelist and blacklist.',
+          [
+            '@intersected_extensions' => implode(', ', $intersected_extensions),
           ])
       );
     }

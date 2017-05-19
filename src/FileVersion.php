@@ -93,7 +93,7 @@ class FileVersion implements FileVersionInterface {
     return $this->parseCommaSeparatedList($extension_blacklist);
   }
 
-  private function parseCommaSeparatedList($string) {
+  public function parseCommaSeparatedList($string) {
     $items = explode(',', $string);
     $items = array_map('trim', $items);
     return array_filter($items, function($value) {
