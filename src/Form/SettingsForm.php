@@ -110,7 +110,7 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Extensions whitelist'),
       '#default_value' => $config->get('extensions_whitelist'),
       '#rows' => 5,
-      '#description' => $this->t('Extensions to include. <b>IMPORTANT:</b> This field force extensions inclusion although File Version checkboxes won\'t be checked.'),
+      '#description' => $this->t('Comma separated extensions to include. <b>IMPORTANT:</b> This field force extensions inclusion although File Version checkboxes won\'t be checked.'),
     ];
 
     // @todo add advanced fieldset
