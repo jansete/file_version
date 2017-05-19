@@ -31,14 +31,14 @@ specified extension.
     files, or for use with none checkbox checked to choose exactly your
     file extensions.
 
-IMPORTANT:
- -  The module will generate absolute URLs for avoid encoding conflicts
-    with GET query parameters.
- -  The module use hook_file_url_alter(), so it works with core file/image
-    workflow and all the files using file_create_url().
-
 Example file URL without File Version:
 http://example.com/sites/default/files/2017-05/example.png
 
 Example file URL with File Version:
 http://example.com/sites/default/files/2017-05/example.png?fv=v-malxjm
+
+IMPORTANT:
+ -  The module will generate absolute URLs for avoid encoding conflicts
+    with GET query parameters.
+ -  The module use hook_file_url_alter(), so it works with core file/image
+    workflow and all the files using file_create_url().
