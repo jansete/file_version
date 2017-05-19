@@ -108,8 +108,7 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Extensions whitelist'),
       '#default_value' => $config->get('extensions_whitelist'),
       '#rows' => 5,
-      '#description' => $this->t('Extensions to include. IMPORTANT: Not implemented yet.'),
-      '#disabled' => TRUE,
+      '#description' => $this->t('Extensions to include. <b>IMPORTANT:</b> This field force extensions inclusion although File Version checkboxes won\'t be checked.'),
     ];
 
     return parent::buildForm($form, $form_state);

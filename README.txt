@@ -13,6 +13,8 @@ You can configure:
 IMPORTANT: The module will generate absolute URLs for avoid encoding conflicts
 with GET query parameters.
 
+@todo Add only when files are called by file_create_url
+
 Example file URL without File Version:
 http://example.com/sites/default/files/2017-05/example.png
 

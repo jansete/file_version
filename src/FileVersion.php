@@ -46,12 +46,14 @@ class FileVersion implements FileVersionInterface {
 
     $file_version_settings = $this->configFactory->get('file_version.settings');
     $get_parameter_name = $file_version_settings->get('get_parameter_name');
+    $whitelist_extensions = $this->getWhitelistExtensions();
+    $extension = pathinfo($uri, PATHINFO_EXTENSION);
 
     if (
           ($file_version_settings->get('enable_image_styles') && $this->isImageStyleUri($original_uri))
       ||  $file_version_settings->get('enable_all_files')
+      ||  in_array($extension, $whitelist_extensions)
     ) {
-      $extension = pathinfo($uri, PATHINFO_EXTENSION);
       $blacklist_extensions = $this->getBlacklistExtensions();
 
       if (!in_array($extension, $blacklist_extensions)) {
