@@ -119,7 +119,7 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Image styles URL prefix'),
       '#default_value' => $config->get('image_styles_url_prefix'),
       '#rows' => 5,
-      '#description' => $this->t('Some modules that implements external file system have different image styles url prefix. Add one per line. Eg: /s3/files/styles/'),
+      '#description' => $this->t('Some modules that implements external file system have different image styles url prefix. Add one per line. Core prefix "/styles" always is included. Eg: /s3/files/styles/'),
     ];
 
     return parent::buildForm($form, $form_state);
