@@ -5,6 +5,7 @@ namespace Drupal\file_version;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\PrivateKey;
 use Drupal\Core\Site\Settings;
 
@@ -21,11 +22,17 @@ class FileVersion implements FileVersionInterface {
   private $configFactory;
 
   /**
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  private $moduleHandler;
+
+  /**
    * @param \Drupal\Core\PrivateKey $private_key
    */
-  public function __construct(PrivateKey $private_key, ConfigFactoryInterface $config_factory) {
+  public function __construct(PrivateKey $private_key, ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler) {
     $this->privateKey = $private_key;
     $this->configFactory = $config_factory;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -127,15 +134,12 @@ class FileVersion implements FileVersionInterface {
     return in_array($protocol, $by_passed_protocols);
   }
 
+  /**
+   * @return array
+   */
   public function getInvalidQueryParameterNames() {
-    $invalid_params = [
-      'q',
-      'itok',
-      'file',
-    ];
-
-    // @todo Add hook_alter
-
+    $invalid_params = ['q', 'itok', 'file'];
+    $this->moduleHandler->invokeAll('file_version_invalid_params', [$invalid_params]);
     return $invalid_params;
   }
 
