@@ -16,3 +16,6 @@ file_version.settings:
     extensions_whitelist:
       type: string
       label: 'Extensions to include'
+    image_styles_url_prefix:
+      type: string
+      label: 'Image styles url prefix for external file systems'
