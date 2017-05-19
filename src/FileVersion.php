@@ -28,6 +28,10 @@ class FileVersion implements FileVersionInterface {
     $this->configFactory = $config_factory;
   }
 
+  /**
+   * @param      $uri
+   * @param null $original_uri
+   */
   public function addFileVersionToken(&$uri, $original_uri = NULL) {
     if (!$original_uri) {
       $original_uri = $uri;
@@ -74,6 +78,11 @@ class FileVersion implements FileVersionInterface {
     return [];
   }
 
+  /**
+   * @param $uri
+   *
+   * @return string
+   */
   public function getFileVersionToken($uri) {
     $modified_file = NULL;
     if (file_exists($uri)) {
@@ -86,6 +95,11 @@ class FileVersion implements FileVersionInterface {
     return $this->getCryptedToken("$uri:$modified_file");
   }
 
+  /**
+   * @param $data
+   *
+   * @return string
+   */
   public function getCryptedToken($data) {
     $private_key = $this->privateKey->get();
     $hash_salt = Settings::getHashSalt();
@@ -103,6 +117,11 @@ class FileVersion implements FileVersionInterface {
     return ['http', 'https', 'data'];
   }
 
+  /**
+   * @param $protocol
+   *
+   * @return bool
+   */
   public function isProtocolByPassed($protocol) {
     $by_passed_protocols = $this->getByPassedProtocols();
     return in_array($protocol, $by_passed_protocols);
