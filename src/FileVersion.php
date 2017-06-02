@@ -9,6 +9,11 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\PrivateKey;
 use Drupal\Core\Site\Settings;
 
+/**
+ * Class FileVersion
+ *
+ * @package Drupal\file_version
+ */
 class FileVersion implements FileVersionInterface {
 
   /**
@@ -27,7 +32,9 @@ class FileVersion implements FileVersionInterface {
   private $moduleHandler;
 
   /**
-   * @param \Drupal\Core\PrivateKey $private_key
+   * @param \Drupal\Core\PrivateKey                       $private_key
+   * @param \Drupal\Core\Config\ConfigFactoryInterface    $config_factory
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    */
   public function __construct(PrivateKey $private_key, ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler) {
     $this->privateKey = $private_key;
@@ -36,8 +43,7 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
-   * @param      $uri
-   * @param null $original_uri
+   * {@inheritdoc}
    */
   public function addFileVersionToken(&$uri, $original_uri = NULL) {
     if (!$original_uri) {
@@ -91,16 +97,25 @@ class FileVersion implements FileVersionInterface {
     return FALSE;
   }
 
+  /**
+   * @return array|mixed
+   */
   private function getWhitelistExtensions() {
     $extension_whitelist = $this->configFactory->get('file_version.settings')->get('extensions_whitelist');
     return $this->parseCommaSeparatedList($extension_whitelist);
   }
 
+  /**
+   * @return array|mixed
+   */
   private function getBlacklistExtensions() {
     $extension_blacklist = $this->configFactory->get('file_version.settings')->get('extensions_blacklist');
     return $this->parseCommaSeparatedList($extension_blacklist);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function parseCommaSeparatedList($string) {
     $items = explode(',', $string);
     $items = array_map('trim', $items);
@@ -109,19 +124,43 @@ class FileVersion implements FileVersionInterface {
     });
   }
 
+  /**
+   * Get all image styles url prefixes.
+   *
+   * Include core default prefix '/styles/' and user defined prefixed.
+   *
+   * @return array
+   */
   private function getImageStylesUrlPrefixes() {
     $image_styles_url_prefixes = ['/styles/'];
     $raw_config_prefixes = $this->configFactory->get('file_version.settings')->get('image_styles_url_prefix');
     $config_prefixes = $this->parseLineSeparatedList($raw_config_prefixes);
     $prefixes = array_merge($image_styles_url_prefixes, $config_prefixes);
-    return $this->formatImageStylesUrlPrefiex($prefixes);
+    return $this->formatImageStylesUrlPrefix($prefixes);
   }
 
+  /**
+   * Method that parse a line separated string to convert into an array.
+   *
+   * @param $string
+   *
+   * @return array
+   */
   private function parseLineSeparatedList($string) {
     return explode("\r\n", $string);
   }
 
-  private function formatImageStylesUrlPrefiex(array $prefixes) {
+  /**
+   * Delete / in the beginning of each prefix if exist.
+   *
+   * This do easy to compare against file_uri_target() that doesn't return the
+   * first /.
+   *
+   * @param array $prefixes
+   *
+   * @return array
+   */
+  private function formatImageStylesUrlPrefix(array $prefixes) {
     return array_map(function($value) {
       $value = trim($value);
       if (strpos($value, '/') === 0) {
@@ -132,9 +171,7 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
-   * @param $uri
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getFileVersionToken($uri) {
     $modified_file = NULL;
@@ -149,9 +186,7 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
-   * @param $data
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getCryptedToken($data) {
     $private_key = $this->privateKey->get();
@@ -162,18 +197,20 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
+   * By Passed Protocols that avoid
+   * \Drupal\Core\StreamWrapper\StreamWrapperInterface::getExternalUrl().
+   *
    * @return array
    *
    * @see file_create_url()
+   * @see \Drupal\Core\StreamWrapper\StreamWrapperInterface::getExternalUrl()
    */
   private function getByPassedProtocols() {
     return ['http', 'https', 'data'];
   }
 
   /**
-   * @param $protocol
-   *
-   * @return bool
+   * {@inheritdoc}
    */
   public function isProtocolByPassed($protocol) {
     $by_passed_protocols = $this->getByPassedProtocols();
@@ -181,7 +218,7 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getInvalidQueryParameterNames() {
     $invalid_params = ['q', 'itok', 'file'];
