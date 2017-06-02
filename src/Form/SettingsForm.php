@@ -64,8 +64,6 @@ class SettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
-   *
-   * @todo add states to show hide incompatible config fields.
    */
   public function buildForm(array $form, FormStateInterface $form_state, Request $request = NULL) {
     $config = $this->config('file_version.settings');
@@ -75,6 +73,28 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Enable File Version for image styles'),
       '#default_value' => $config->get('enable_image_styles'),
       '#description' => $this->t('This option add simple token to image styles url.'),
+      '#states' => [
+        'checked' => [
+          ':input#edit-enable-all-files' => ['checked' => TRUE],
+        ],
+        'disabled' => [
+          ':input#edit-enable-all-files' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['image_styles_url_prefix'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Image styles URL prefix'),
+      '#default_value' => $config->get('image_styles_url_prefix'),
+      '#rows' => 5,
+      '#description' => $this->t('<b>This field is only useful if you only check "Enable File Version for image styles".</b> Some modules that implements external file system have different image styles url prefix. Add one per line. Core prefix "/styles" always is included. Eg: /s3/files/styles/'),
+      '#states' => [
+        'visible' => [
+          ':input#edit-enable-image-styles' => ['checked' => TRUE],
+          ':input#edit-enable-all-files' => ['checked' => FALSE],
+        ],
+      ],
     ];
 
     $form['enable_all_files'] = [
@@ -102,7 +122,6 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    // @todo add extensions list fieldset
     $form['extensions_blacklist'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Extensions blacklist'),
@@ -116,16 +135,13 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Extensions whitelist'),
       '#default_value' => $config->get('extensions_whitelist'),
       '#rows' => 5,
-      '#description' => $this->t("Comma separated extensions to include. <b>IMPORTANT:</b> This field force extensions inclusion although File Version checkboxes won't be checked."),
-    ];
-
-    // @todo add advanced fieldset
-    $form['image_styles_url_prefix'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Image styles URL prefix'),
-      '#default_value' => $config->get('image_styles_url_prefix'),
-      '#rows' => 5,
-      '#description' => $this->t('Some modules that implements external file system have different image styles url prefix. Add one per line. Core prefix "/styles" always is included. Eg: /s3/files/styles/'),
+      '#description' => $this->t('<b>This field is only useful if you only check "Enable File Version for image styles".</b> Comma separated extensions to include. <b>IMPORTANT:</b> This field force extensions inclusion although File Version checkboxes won\'t be checked.'),
+      '#states' => [
+        'visible' => [
+          ':input#edit-enable-image-styles' => ['checked' => TRUE],
+          ':input#edit-enable-all-files' => ['checked' => FALSE],
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

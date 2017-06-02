@@ -67,8 +67,8 @@ class FileVersion implements FileVersionInterface {
     $extension = pathinfo($uri, PATHINFO_EXTENSION);
 
     if (
-          ($file_version_settings->get('enable_image_styles') && $this->isImageStyleUri($original_uri))
-      ||  $file_version_settings->get('enable_all_files')
+          $file_version_settings->get('enable_all_files')
+      ||  ($file_version_settings->get('enable_image_styles') && $this->isImageStyleUri($original_uri))
       ||  in_array($extension, $whitelist_extensions)
     ) {
       $blacklist_extensions = $this->getBlacklistedExtensions();
