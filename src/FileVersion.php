@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Interface FileVersion
- */
-
 namespace Drupal\file_version;
 
 use Drupal\Component\Utility\Crypt;

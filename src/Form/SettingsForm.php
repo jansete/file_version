@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Admin configuration form.
- */
-
 namespace Drupal\file_version\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -15,18 +10,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class SettingsForm
+ * Class SettingsForm.
  */
 class SettingsForm extends ConfigFormBase {
 
   /**
+   * File Version Service.
+   *
    * @var \Drupal\file_version\FileVersionInterface
    */
   private $fileVersion;
 
   /**
+   * Class constructor method.
+   *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   * @param \Drupal\file_version\FileVersionInterface  $file_version
+   *   Config Factory Service.
+   * @param \Drupal\file_version\FileVersionInterface $file_version
+   *   File Version Service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, FileVersionInterface $file_version) {
     parent::__construct($config_factory);
@@ -115,7 +116,7 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Extensions whitelist'),
       '#default_value' => $config->get('extensions_whitelist'),
       '#rows' => 5,
-      '#description' => $this->t('Comma separated extensions to include. <b>IMPORTANT:</b> This field force extensions inclusion although File Version checkboxes won\'t be checked.'),
+      '#description' => $this->t("Comma separated extensions to include. <b>IMPORTANT:</b> This field force extensions inclusion although File Version checkboxes won't be checked."),
     ];
 
     // @todo add advanced fieldset
@@ -136,13 +137,13 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $this->config('file_version.settings')
-         ->set('enable_image_styles', $values['enable_image_styles'])
-         ->set('enable_all_files', $values['enable_all_files'])
-         ->set('get_parameter_name', $values['get_parameter_name'])
-         ->set('extensions_blacklist', $values['extensions_blacklist'])
-         ->set('extensions_whitelist', $values['extensions_whitelist'])
-         ->set('image_styles_url_prefix', $values['image_styles_url_prefix'])
-         ->save();
+      ->set('enable_image_styles', $values['enable_image_styles'])
+      ->set('enable_all_files', $values['enable_all_files'])
+      ->set('get_parameter_name', $values['get_parameter_name'])
+      ->set('extensions_blacklist', $values['extensions_blacklist'])
+      ->set('extensions_whitelist', $values['extensions_whitelist'])
+      ->set('image_styles_url_prefix', $values['image_styles_url_prefix'])
+      ->save();
 
     parent::submitForm($form, $form_state);
   }
@@ -157,7 +158,7 @@ class SettingsForm extends ConfigFormBase {
     if (in_array($get_paramater_name, $invalid_params)) {
       $form_state->setError(
         $form['get_parameter_name'],
-        $this->t('Parameter name can\'t be one of @invalid_params.',
+        $this->t("Parameter name can't be one of @invalid_params.",
           [
             '@invalid_params' => implode(', ', $invalid_params),
           ])
