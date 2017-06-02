@@ -58,6 +58,8 @@ class SettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @todo add states to show hide incompatible config fields.
    */
   public function buildForm(array $form, FormStateInterface $form_state, Request $request = NULL) {
     $config = $this->config('file_version.settings');
