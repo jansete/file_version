@@ -11,7 +11,8 @@
  * If you have some query parameter restrictions you can add here to validate
  * in settings form.
  *
- * @param $invalid_params
+ * @param array $invalid_params
+ *   Array with current invalid query params to alter.
  *
  * @see \Drupal\file_version\FileVersion
  */
