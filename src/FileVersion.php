@@ -52,7 +52,7 @@ class FileVersion implements FileVersionInterface {
 
     $file_version_settings = $this->configFactory->get('file_version.settings');
     $get_parameter_name = $file_version_settings->get('get_parameter_name');
-    $whitelist_extensions = $this->getWhitelistExtensions();
+    $whitelist_extensions = $this->getWhitelistedExtensions();
     $extension = pathinfo($uri, PATHINFO_EXTENSION);
 
     if (
@@ -60,7 +60,7 @@ class FileVersion implements FileVersionInterface {
       ||  $file_version_settings->get('enable_all_files')
       ||  in_array($extension, $whitelist_extensions)
     ) {
-      $blacklist_extensions = $this->getBlacklistExtensions();
+      $blacklist_extensions = $this->getBlacklistedExtensions();
 
       if (!in_array($extension, $blacklist_extensions)) {
         $url = UrlHelper::parse($uri);
@@ -102,7 +102,7 @@ class FileVersion implements FileVersionInterface {
    *
    * @return array
    */
-  private function getWhitelistExtensions() {
+  private function getWhitelistedExtensions() {
     $extension_whitelist = $this->configFactory->get('file_version.settings')->get('extensions_whitelist');
     return $this->parseCommaSeparatedList($extension_whitelist);
   }
@@ -112,7 +112,7 @@ class FileVersion implements FileVersionInterface {
    *
    * @return array
    */
-  private function getBlacklistExtensions() {
+  private function getBlacklistedExtensions() {
     $extension_blacklist = $this->configFactory->get('file_version.settings')->get('extensions_blacklist');
     return $this->parseCommaSeparatedList($extension_blacklist);
   }
