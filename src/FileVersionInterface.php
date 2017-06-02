@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Interface FileVersionInterface
+ */
+
 namespace Drupal\file_version;
 
 /**

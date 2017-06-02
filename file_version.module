@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * File that implements Drupal hooks.
+ */
+
+/**
  * Implements hook_file_url_alter().
  *
  * Add file version token for all file urls that use file_create_url().

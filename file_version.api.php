@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Hooks related to file_version.
+ */
+
+/**
  * Modify invalid_params.
  *
  * If you have some query parameter restrictions you can add here to validate

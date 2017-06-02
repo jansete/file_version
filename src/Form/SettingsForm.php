@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Admin configuration form.
+ */
+
 namespace Drupal\file_version\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
