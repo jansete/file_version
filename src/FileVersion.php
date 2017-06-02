@@ -10,31 +10,42 @@ use Drupal\Core\PrivateKey;
 use Drupal\Core\Site\Settings;
 
 /**
- * Class FileVersion
+ * Class FileVersion.
  *
  * @package Drupal\file_version
  */
 class FileVersion implements FileVersionInterface {
 
   /**
+   * PrivateKey Service.
+   *
    * @var \Drupal\Core\PrivateKey
    */
   private $privateKey;
 
   /**
+   * ConfigFactory Service.
+   *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   private $configFactory;
 
   /**
+   * Module Handler Service.
+   *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
   private $moduleHandler;
 
   /**
-   * @param \Drupal\Core\PrivateKey                       $private_key
-   * @param \Drupal\Core\Config\ConfigFactoryInterface    $config_factory
+   * Constructor method of FileVersion Service.
+   *
+   * @param \Drupal\Core\PrivateKey $private_key
+   *   PrivateKey Service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   ConfigFactory Service.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   ModuleHandler Service.
    */
   public function __construct(PrivateKey $private_key, ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler) {
     $this->privateKey = $private_key;
@@ -66,9 +77,9 @@ class FileVersion implements FileVersionInterface {
         $url = UrlHelper::parse($uri);
 
         if (empty($url['query'][$get_parameter_name])) {
-          $query = array(
-            $get_parameter_name => $this->getFileVersionToken($original_uri)
-          );
+          $query = [
+            $get_parameter_name => $this->getFileVersionToken($original_uri),
+          ];
 
           $uri .= (strpos($uri, '?') !== FALSE ? '&' : '?') . UrlHelper::buildQuery($query);
         }
@@ -79,15 +90,18 @@ class FileVersion implements FileVersionInterface {
   /**
    * Check if the path is image style path.
    *
-   * @param $path
+   * @param string $uri
+   *   Uri to check.
+   *
    * @return bool
+   *   TRUE if is the uri is an image style uri, FALSE in otherwise.
    */
   private function isImageStyleUri($uri) {
     $image_styles_url_prefixes = $this->getImageStylesUrlPrefixes();
     $target = file_uri_target($uri);
     if ($target) {
-      // Escape all '/' chars to compose correct regular expression
-      $image_styles_url_prefixes = array_map(function($value) {
+      // Escape all '/' chars to compose correct regular expression.
+      $image_styles_url_prefixes = array_map(function ($value) {
         return preg_quote($value, '/');
       }, $image_styles_url_prefixes);
 
@@ -101,6 +115,7 @@ class FileVersion implements FileVersionInterface {
    * Get all whitelisted extensions.
    *
    * @return array
+   *   Extensions that belongs to whitelist.
    */
   private function getWhitelistedExtensions() {
     $extension_whitelist = $this->configFactory->get('file_version.settings')->get('extensions_whitelist');
@@ -111,6 +126,7 @@ class FileVersion implements FileVersionInterface {
    * Get all blacklisted extensions.
    *
    * @return array
+   *   Extensions that belongs to blacklist.
    */
   private function getBlacklistedExtensions() {
     $extension_blacklist = $this->configFactory->get('file_version.settings')->get('extensions_blacklist');
@@ -123,7 +139,7 @@ class FileVersion implements FileVersionInterface {
   public function parseCommaSeparatedList($string) {
     $items = explode(',', $string);
     $items = array_map('trim', $items);
-    return array_filter($items, function($value) {
+    return array_filter($items, function ($value) {
       return $value !== "";
     });
   }
@@ -134,6 +150,7 @@ class FileVersion implements FileVersionInterface {
    * Include core default prefix '/styles/' and user defined prefixed.
    *
    * @return array
+   *   Array with all image styles url prefixes, core and user defined.
    */
   private function getImageStylesUrlPrefixes() {
     $image_styles_url_prefixes = ['/styles/'];
@@ -146,9 +163,11 @@ class FileVersion implements FileVersionInterface {
   /**
    * Method that parse a line separated string to convert into an array.
    *
-   * @param $string
+   * @param string $string
+   *   Line separated string list.
    *
    * @return array
+   *   Array with items splitted by line.
    */
   private function parseLineSeparatedList($string) {
     return explode("\r\n", $string);
@@ -161,11 +180,13 @@ class FileVersion implements FileVersionInterface {
    * first /.
    *
    * @param array $prefixes
+   *   Prefixes to be formatted.
    *
    * @return array
+   *   Formatted image styles url prefixes.
    */
   private function formatImageStylesUrlPrefix(array $prefixes) {
-    return array_map(function($value) {
+    return array_map(function ($value) {
       $value = trim($value);
       if (strpos($value, '/') === 0) {
         $value = substr($value, 1);
@@ -201,10 +222,13 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
-   * By Passed Protocols that avoid
+   * By Passed Protocols.
+   *
+   * These protocols will avoid
    * \Drupal\Core\StreamWrapper\StreamWrapperInterface::getExternalUrl().
    *
    * @return array
+   *   List of by passed protocols.
    *
    * @see file_create_url()
    * @see \Drupal\Core\StreamWrapper\StreamWrapperInterface::getExternalUrl()
