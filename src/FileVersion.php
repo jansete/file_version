@@ -98,7 +98,9 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
-   * @return array|mixed
+   * Get all whitelisted extensions.
+   *
+   * @return array
    */
   private function getWhitelistExtensions() {
     $extension_whitelist = $this->configFactory->get('file_version.settings')->get('extensions_whitelist');
@@ -106,7 +108,9 @@ class FileVersion implements FileVersionInterface {
   }
 
   /**
-   * @return array|mixed
+   * Get all blacklisted extensions.
+   *
+   * @return array
    */
   private function getBlacklistExtensions() {
     $extension_blacklist = $this->configFactory->get('file_version.settings')->get('extensions_blacklist');

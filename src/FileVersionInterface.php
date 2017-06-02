@@ -10,7 +10,7 @@ namespace Drupal\file_version;
 interface FileVersionInterface {
 
   /**
-   * Method that add file version token.
+   * Implements the logic to when add file version token.
    *
    * @param $uri
    * @param $original_uri
@@ -27,28 +27,37 @@ interface FileVersionInterface {
   public function parseCommaSeparatedList($string);
 
   /**
+   * Return file version token.
+   *
    * @param $uri
    *
-   * @return mixed
+   * @return string
    */
   public function getFileVersionToken($uri);
 
   /**
+   * Crypt data to get the final token.
+   *
    * @param $data
    *
-   * @return mixed
+   * @return string
    */
   public function getCryptedToken($data);
 
   /**
+   * Determine if the current protocol is by passed.
+   *
    * @param $protocol
    *
-   * @return mixed
+   * @return boolean
    */
   public function isProtocolByPassed($protocol);
 
   /**
-   * @return mixed
+   * Define an array list of query parameters that can make conflicts like q,
+   * file, etc.
+   *
+   * @return array
    */
   public function getInvalidQueryParameterNames();
 
