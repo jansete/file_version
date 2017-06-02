@@ -97,7 +97,6 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     // @todo add extensions list fieldset
-
     $form['extensions_blacklist'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Extensions blacklist'),
