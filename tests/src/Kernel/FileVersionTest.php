@@ -30,7 +30,7 @@ class FileVersionTest extends KernelTestBase {
     $query = parse_url($url, PHP_URL_QUERY);
     $fv_count = substr_count($query, 'fv=');
 
-    $this->assertEquals(2, $fv_count, "Don't add other fv parameter get");
+    $this->assertEquals(1, $fv_count, "Don't add other fv parameter get");
   }
 
 }
