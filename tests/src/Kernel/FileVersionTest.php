@@ -33,4 +33,18 @@ class FileVersionTest extends KernelTestBase {
     $this->assertEquals(1, $fv_count, "Don't add other fv parameter get");
   }
 
+  /**
+   * Absolute Urls must keep absolutes.
+   */
+  public function testAbsoluteUrlsKeepAbsolutes() {
+    $uri = 'http://example.com/myfile.doc';
+    $token = \Drupal::service('file_version')->getFileVersionToken($uri);
+    $uri .= '?fv=' . $token;
+
+    $url = file_create_url($uri);
+    $scheme = \Drupal::service('file_system')->uriScheme($url);
+
+    $this->assertTrue(\Drupal::service('file_version')->isProtocolByPassed($scheme), "Absolute Urls must keep absolutes.");
+  }
+
 }
