@@ -3,6 +3,8 @@
 namespace Drupal\Tests\file_version\Kernel;
 
 /**
+ * FileTest for cover Files with File Version.
+ *
  * @group FileVersion
  */
 class FileTest extends FileVersionTestBase {

@@ -6,6 +6,8 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
+ * Abstract with common methods for File Version tests.
+ *
  * @group FileVersion
  */
 abstract class FileVersionTestBase extends KernelTestBase {
@@ -44,9 +46,11 @@ abstract class FileVersionTestBase extends KernelTestBase {
    *
    * Reuse \Drupal\file_version\FileVersion::isProtocolByPassed() to check it.
    *
-   * @param $url
+   * @param string $url
+   *   URL to check.
    *
    * @return bool
+   *   TRUE if is absolute, FALSE otherwise.
    */
   protected function isUrlAbsolute($url) {
     $scheme = \Drupal::service('file_system')->uriScheme($url);
@@ -56,10 +60,13 @@ abstract class FileVersionTestBase extends KernelTestBase {
   /**
    * Check if URL has query parameter.
    *
-   * @param        $url
+   * @param string $url
+   *   URL to check.
    * @param string $query_param
+   *   Param to check.
    *
    * @return bool
+   *   TRUE if $url has $query_param in their query parameters, FALSE otherwise.
    */
   protected function urlHasQueryParam($url, $query_param = 'fv') {
     $url_info = UrlHelper::parse($url);

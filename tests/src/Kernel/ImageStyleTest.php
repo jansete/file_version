@@ -1,9 +1,12 @@
 <?php
 
 namespace Drupal\Tests\file_version\Kernel;
+
 use Drupal\image\Entity\ImageStyle;
 
 /**
+ * ImageStyleTest for cover Image Styles with File Version.
+ *
  * @group FileVersion
  */
 class ImageStyleTest extends FileVersionTestBase {
@@ -16,7 +19,9 @@ class ImageStyleTest extends FileVersionTestBase {
   public static $modules = ['system', 'config', 'file', 'image', 'file_version'];
 
   /**
-   * @var \Drupal\image\ImageStyleInterface;
+   * Image Style to use in tests.
+   *
+   * @var \Drupal\image\ImageStyleInterface
    */
   private $imageStyle;
 
