@@ -121,4 +121,16 @@ class FileTest extends KernelTestBase {
     $this->assertTrue($this->urlHasFileVersion($url), 'Root relative URL have File Version');
   }
 
+  /**
+   * Check if URLs works with custom File Version query parameter.
+   */
+  public function testCustomFileVersionParameter() {
+    $this->enableAllFiles();
+    $custom_query_parameter = 'jv';
+    $this->config('file_version.settings')->set('get_parameter_name', $custom_query_parameter)->save();
+    $uri = 'http://example.com/myfile.doc';
+    $url = file_create_url($uri);
+    $this->assertTrue($this->urlHasFileVersion($url, $custom_query_parameter), 'URL works with custom query parameter.');
+  }
+
 }
