@@ -44,8 +44,8 @@ class FileTest extends FileVersionTestBase {
   public function testAbsoluteUrl() {
     $uri = 'http://example.com/myfile.doc';
     $url = file_create_url($uri);
-    $this->assertTrue($this->isUrlAbsolute($url), 'Absolute URL keep absolute.');
-    $this->assertTrue($this->urlHasQueryParam($url), 'Absolute URL have File Version');
+    $this->assertTrue($this->isUrlAbsolute($url), 'Absolute URL keeps absolute.');
+    $this->assertTrue($this->urlHasQueryParam($url), 'Absolute URL has File Version');
   }
 
   /**
@@ -55,7 +55,7 @@ class FileTest extends FileVersionTestBase {
     $scheme_uri = 'public://myfile.doc';
     $url = file_create_url($scheme_uri);
     $this->assertTrue($this->isUrlAbsolute($url), 'Scheme URI is converted to absolute URL.');
-    $this->assertTrue($this->urlHasQueryParam($url), 'Scheme URI have File Version');
+    $this->assertTrue($this->urlHasQueryParam($url), 'Scheme URI has File Version');
   }
 
   /**
@@ -65,7 +65,7 @@ class FileTest extends FileVersionTestBase {
     $relative_uri = 'modules/custom/mymodule/myfile.doc';
     $url = file_create_url($relative_uri);
     $this->assertTrue($this->isUrlAbsolute($url), 'Relative URL is converted to absolute URL.');
-    $this->assertTrue($this->urlHasQueryParam($url), 'Relative URL have File Version');
+    $this->assertTrue($this->urlHasQueryParam($url), 'Relative URL has File Version');
   }
 
   /**
@@ -74,8 +74,8 @@ class FileTest extends FileVersionTestBase {
   public function testRootRelativeUrl() {
     $root_relative_uri = '/modules/custom/mymodule/myfile.doc';
     $url = file_create_url($root_relative_uri);
-    $this->assertTrue(strpos($url, $root_relative_uri) === 0, 'Root relative URL keep root relative.');
-    $this->assertTrue($this->urlHasQueryParam($url), 'Root relative URL have File Version');
+    $this->assertTrue(strpos($url, $root_relative_uri) === 0, 'Root relative URL keeps root relative.');
+    $this->assertTrue($this->urlHasQueryParam($url), 'Root relative URL has File Version');
   }
 
   /**
@@ -99,14 +99,14 @@ class FileTest extends FileVersionTestBase {
     $this->config('file_version.settings')->set('extensions_blacklist', 'doc')->save();
     $doc_url = file_create_url($doc_uri);
     $pdf_url = file_create_url($pdf_uri);
-    $this->assertFalse($this->urlHasQueryParam($doc_url), "Blacklisted extension don't have File Version: single value.");
-    $this->assertTrue($this->urlHasQueryParam($pdf_url), "Other extensions have File Version: single value.");
+    $this->assertFalse($this->urlHasQueryParam($doc_url), "Blacklisted extension doesn't have File Version: single value.");
+    $this->assertTrue($this->urlHasQueryParam($pdf_url), 'Other extensions have File Version: single value.');
 
     $this->config('file_version.settings')->set('extensions_blacklist', 'doc, xml')->save();
     $doc_url = file_create_url($doc_uri);
     $pdf_url = file_create_url($pdf_uri);
-    $this->assertFalse($this->urlHasQueryParam($doc_url), "Blacklisted extension don't have File Version: list.");
-    $this->assertTrue($this->urlHasQueryParam($pdf_url), "Other extensions have File Version: list.");
+    $this->assertFalse($this->urlHasQueryParam($doc_url), "Blacklisted extension doesn't have File Version: list.");
+    $this->assertTrue($this->urlHasQueryParam($pdf_url), 'Other extensions have File Version: list.');
   }
 
 }

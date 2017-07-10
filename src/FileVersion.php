@@ -105,7 +105,11 @@ class FileVersion implements FileVersionInterface {
         return preg_quote($value, '/');
       }, $image_styles_url_prefixes);
 
-      $pattern = '/[^' . implode('|^', $image_styles_url_prefixes) . ']/';
+      $prefixes_pattern = count($image_styles_url_prefixes) == 1
+        ? reset($image_styles_url_prefixes)
+        : implode('|', $image_styles_url_prefixes);
+
+      $pattern = '/^(' . $prefixes_pattern . ')/';
       return preg_match($pattern, $target);
     }
     return FALSE;
@@ -170,7 +174,9 @@ class FileVersion implements FileVersionInterface {
    *   Array with items splitted by line.
    */
   private function parseLineSeparatedList($string) {
-    return explode("\r\n", $string);
+    return $string
+      ? explode("\r\n", $string)
+      : [];
   }
 
   /**
