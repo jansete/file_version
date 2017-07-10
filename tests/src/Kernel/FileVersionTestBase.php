@@ -26,6 +26,20 @@ abstract class FileVersionTestBase extends KernelTestBase {
   }
 
   /**
+   * Disable file version for all files.
+   */
+  protected function disableAllFiles() {
+    $this->config('file_version.settings')->set('enable_all_files', FALSE)->save();
+  }
+
+  /**
+   * Enable file version for image styles.
+   */
+  protected function enableImageStyles() {
+    $this->config('file_version.settings')->set('enable_image_styles', TRUE)->save();
+  }
+
+  /**
    * Check if URL is absolute.
    *
    * Reuse \Drupal\file_version\FileVersion::isProtocolByPassed() to check it.
@@ -40,16 +54,16 @@ abstract class FileVersionTestBase extends KernelTestBase {
   }
 
   /**
-   * Check if URL has File Version parameter.
+   * Check if URL has query parameter.
    *
    * @param        $url
-   * @param string $get_parameter_name
+   * @param string $query_param
    *
    * @return bool
    */
-  protected function urlHasFileVersion($url, $get_parameter_name = 'fv') {
+  protected function urlHasQueryParam($url, $query_param = 'fv') {
     $url_info = UrlHelper::parse($url);
-    return !empty($url_info['query'][$get_parameter_name]);
+    return !empty($url_info['query'][$query_param]);
   }
 
 }
