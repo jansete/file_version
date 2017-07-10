@@ -8,7 +8,7 @@ use Drupal\KernelTests\KernelTestBase;
 /**
  * @group FileVersion
  */
-class FileVersionTest extends KernelTestBase {
+class FileTest extends KernelTestBase {
 
   /**
    * Modules to enable.
