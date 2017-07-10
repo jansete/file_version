@@ -46,22 +46,35 @@ class ImageStyleTest extends FileVersionTestBase {
     $this->assertTrue($this->urlHasQueryParam($url, 'itok'), 'Image style has itok for image styles config.');
   }
 
+  /**
+   * Cover extensions whitelist.
+   */
   public function testExtensionsWhitelist() {
     $image_uri = 'public://image.png';
     $doc_uri = 'http://example.com/myfile.doc';
     $pdf_uri = 'http://example.com/myfile.pdf';
 
     $this->enableImageStyles();
-    $this->config('file_version.settings')->set('extensions_whitelist', 'doc')->save();
 
+    $this->config('file_version.settings')->set('extensions_whitelist', 'doc')->save();
     $image_url = $this->imageStyle->buildUrl($image_uri);
     $doc_url = file_create_url($doc_uri);
     $pdf_url = file_create_url($pdf_uri);
 
     $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions whitelist is setted: single value.');
-    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has when extensions whitelist is setted: single value..');
+    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has when extensions whitelist is setted: single value.');
     $this->assertTrue($this->urlHasQueryParam($doc_url), 'Whitelisted extension has File Version: single value.');
     $this->assertFalse($this->urlHasQueryParam($pdf_url), "Other extensions don't have File Version: single value.");
+
+    $this->config('file_version.settings')->set('extensions_whitelist', 'doc, xml')->save();
+    $image_url = $this->imageStyle->buildUrl($image_uri);
+    $doc_url = file_create_url($doc_uri);
+    $pdf_url = file_create_url($pdf_uri);
+
+    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions whitelist is setted: list.');
+    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has when extensions whitelist is setted: list.');
+    $this->assertTrue($this->urlHasQueryParam($doc_url), 'Whitelisted extension has File Version: list.');
+    $this->assertFalse($this->urlHasQueryParam($pdf_url), "Other extensions don't have File Version: list.");
   }
 
 }
