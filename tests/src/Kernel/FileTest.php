@@ -89,4 +89,24 @@ class FileTest extends FileVersionTestBase {
     $this->assertTrue($this->urlHasQueryParam($url, $custom_query_parameter), 'URL works with custom query parameter.');
   }
 
+  /**
+   * Cover extensions blacklist.
+   */
+  public function testExtensionsBlacklist() {
+    $doc_uri = 'http://example.com/myfile.doc';
+    $pdf_uri = 'http://example.com/myfile.pdf';
+
+    $this->config('file_version.settings')->set('extensions_blacklist', 'doc')->save();
+    $doc_url = file_create_url($doc_uri);
+    $pdf_url = file_create_url($pdf_uri);
+    $this->assertFalse($this->urlHasQueryParam($doc_url), "Blacklisted extension don't have File Version: single value.");
+    $this->assertTrue($this->urlHasQueryParam($pdf_url), "Other extensions have File Version: single value.");
+
+    $this->config('file_version.settings')->set('extensions_blacklist', 'doc, xml')->save();
+    $doc_url = file_create_url($doc_uri);
+    $pdf_url = file_create_url($pdf_uri);
+    $this->assertFalse($this->urlHasQueryParam($doc_url), "Blacklisted extension don't have File Version: list.");
+    $this->assertTrue($this->urlHasQueryParam($pdf_url), "Other extensions have File Version: list.");
+  }
+
 }
