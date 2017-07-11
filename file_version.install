@@ -20,3 +20,12 @@ function file_version_install() {
 function file_version_update_8001() {
   module_set_weight('file_version', 1);
 }
+
+/**
+ * Delete not needed "image_styles_url_prefix" config property.
+ */
+function file_version_update_8002() {
+  $config = \Drupal::configFactory()->getEditable('file_version.settings');
+  $config->clear('image_styles_url_prefix');
+  $config->save();
+}
