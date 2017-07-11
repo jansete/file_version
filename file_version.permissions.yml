@@ -1,4 +1,3 @@
 administer file_version:
   description: 'Administer File Version.'
   title: 'Administer File Version'
-  restrict access: TRUE
