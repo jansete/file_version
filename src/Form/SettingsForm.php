@@ -83,20 +83,6 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
-    $form['image_styles_url_prefix'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Image styles URL prefix'),
-      '#default_value' => $config->get('image_styles_url_prefix'),
-      '#rows' => 5,
-      '#description' => $this->t('<b>This field is only useful if you only check "Enable File Version for image styles".</b> Some modules that implements external file system have different image styles url prefix. Add one per line. Core prefix "/styles" always is included. Eg: /s3/files/styles/'),
-      '#states' => [
-        'visible' => [
-          ':input#edit-enable-image-styles' => ['checked' => TRUE],
-          ':input#edit-enable-all-files' => ['checked' => FALSE],
-        ],
-      ],
-    ];
-
     $form['enable_all_files'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable File Version for all files'),
@@ -158,7 +144,6 @@ class SettingsForm extends ConfigFormBase {
       ->set('get_parameter_name', $values['get_parameter_name'])
       ->set('extensions_blacklist', $values['extensions_blacklist'])
       ->set('extensions_whitelist', $values['extensions_whitelist'])
-      ->set('image_styles_url_prefix', $values['image_styles_url_prefix'])
       ->save();
 
     parent::submitForm($form, $form_state);

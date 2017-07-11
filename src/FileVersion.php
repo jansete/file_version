@@ -37,6 +37,8 @@ class FileVersion implements FileVersionInterface {
    */
   private $moduleHandler;
 
+  const IMAGE_STYLE_URI_TARGET_PREFIX = 'styles/';
+
   /**
    * Constructor method of FileVersion Service.
    *
@@ -97,19 +99,10 @@ class FileVersion implements FileVersionInterface {
    *   TRUE if is the uri is an image style uri, FALSE in otherwise.
    */
   private function isImageStyleUri($uri) {
-    $image_styles_url_prefixes = $this->getImageStylesUrlPrefixes();
     $target = file_uri_target($uri);
     if ($target) {
-      // Escape all '/' chars to compose correct regular expression.
-      $image_styles_url_prefixes = array_map(function ($value) {
-        return preg_quote($value, '/');
-      }, $image_styles_url_prefixes);
-
-      $prefixes_pattern = count($image_styles_url_prefixes) == 1
-        ? reset($image_styles_url_prefixes)
-        : implode('|', $image_styles_url_prefixes);
-
-      $pattern = '/^(' . $prefixes_pattern . ')/';
+      $prefixes_pattern = preg_quote(static::IMAGE_STYLE_URI_TARGET_PREFIX, '/');
+      $pattern = '/^' . $prefixes_pattern . '/';
       return preg_match($pattern, $target);
     }
     return FALSE;
@@ -146,59 +139,6 @@ class FileVersion implements FileVersionInterface {
     return array_filter($items, function ($value) {
       return $value !== "";
     });
-  }
-
-  /**
-   * Get all image styles url prefixes.
-   *
-   * Include core default prefix '/styles/' and user defined prefixed.
-   *
-   * @return array
-   *   Array with all image styles url prefixes, core and user defined.
-   */
-  private function getImageStylesUrlPrefixes() {
-    $image_styles_url_prefixes = ['/styles/'];
-    $raw_config_prefixes = $this->configFactory->get('file_version.settings')->get('image_styles_url_prefix');
-    $config_prefixes = $this->parseLineSeparatedList($raw_config_prefixes);
-    $prefixes = array_merge($image_styles_url_prefixes, $config_prefixes);
-    return $this->formatImageStylesUrlPrefix($prefixes);
-  }
-
-  /**
-   * Method that parse a line separated string to convert into an array.
-   *
-   * @param string $string
-   *   Line separated string list.
-   *
-   * @return array
-   *   Array with items splitted by line.
-   */
-  private function parseLineSeparatedList($string) {
-    return $string
-      ? explode("\r\n", $string)
-      : [];
-  }
-
-  /**
-   * Delete / in the beginning of each prefix if exist.
-   *
-   * This do easy to compare against file_uri_target() that doesn't return the
-   * first /.
-   *
-   * @param array $prefixes
-   *   Prefixes to be formatted.
-   *
-   * @return array
-   *   Formatted image styles url prefixes.
-   */
-  private function formatImageStylesUrlPrefix(array $prefixes) {
-    return array_map(function ($value) {
-      $value = trim($value);
-      if (strpos($value, '/') === 0) {
-        $value = substr($value, 1);
-      }
-      return $value;
-    }, $prefixes);
   }
 
   /**

@@ -3,4 +3,3 @@ enable_all_files: false
 get_parameter_name: 'fv'
 extensions_blacklist: ''
 extensions_whitelist: ''
-image_styles_url_prefix: ''
