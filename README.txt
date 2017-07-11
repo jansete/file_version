@@ -9,8 +9,6 @@ You can configure:
  -  Add token for image styles URLs
  -  Add token for all files URLs
  -  Define whitelist and blacklist of file extensions
- -  Add styles prefix list to work with external file system like Amazon S3
-    (s3fs module)
 
 HOW TO USE:
 Go to /admin/config/media/file_version and check if you want use File Version
@@ -18,8 +16,8 @@ for "All Files" or only "Image Styles".
  - If you choose "All Files": All files that internal use file_create_url()
    will have file version token.
  - If you choose "Image Styles": All image styles follow system pattern
-   '/styles/' or user defined patterns (for external file system integration)
-   will have file version token.
+   '/styles/' will have file version token (included external file system
+   integration like s3fs module).
 
 ADVANCED USE:
 You can define a comma separated list to exclude or force files with a
