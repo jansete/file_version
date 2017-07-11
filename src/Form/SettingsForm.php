@@ -68,26 +68,23 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state, Request $request = NULL) {
     $config = $this->config('file_version.settings');
 
+    $form['enable_all_files'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable File Version for all files'),
+      '#default_value' => $config->get('enable_all_files'),
+      '#description' => $this->t('This option add simple token to all files url (including image styles).'),
+    ];
+
     $form['enable_image_styles'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable File Version for image styles'),
       '#default_value' => $config->get('enable_image_styles'),
       '#description' => $this->t('This option add simple token to image styles url.'),
       '#states' => [
-        'checked' => [
-          ':input#edit-enable-all-files' => ['checked' => TRUE],
-        ],
-        'disabled' => [
-          ':input#edit-enable-all-files' => ['checked' => TRUE],
+        'visible' => [
+          ':input#edit-enable-all-files' => ['checked' => FALSE],
         ],
       ],
-    ];
-
-    $form['enable_all_files'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable File Version for all files'),
-      '#default_value' => $config->get('enable_all_files'),
-      '#description' => $this->t('This option add simple token to all files url (including image styles).'),
     ];
 
     $random_token = $this->fileVersion->getCryptedToken('randomToken');
