@@ -66,8 +66,8 @@ class ImageStyleTest extends FileVersionTestBase {
     $doc_url = file_create_url($doc_uri);
     $pdf_url = file_create_url($pdf_uri);
 
-    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions whitelist is setted: single value.');
-    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions whitelist is setted: single value.');
+    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions whitelist is set: single value.');
+    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions whitelist is set: single value.');
     $this->assertTrue($this->urlHasQueryParam($doc_url), 'Whitelisted extension has File Version: single value.');
     $this->assertFalse($this->urlHasQueryParam($pdf_url), "Other extensions don't have File Version: single value.");
 
@@ -76,8 +76,8 @@ class ImageStyleTest extends FileVersionTestBase {
     $doc_url = file_create_url($doc_uri);
     $pdf_url = file_create_url($pdf_uri);
 
-    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions whitelist is setted: list.');
-    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions whitelist is setted: list.');
+    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions whitelist is set: list.');
+    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions whitelist is set: list.');
     $this->assertTrue($this->urlHasQueryParam($doc_url), 'Whitelisted extension has File Version: list.');
     $this->assertFalse($this->urlHasQueryParam($pdf_url), "Other extensions don't have File Version: list.");
   }
@@ -94,8 +94,8 @@ class ImageStyleTest extends FileVersionTestBase {
     $image_url = $this->imageStyle->buildUrl($image_uri);
     $blacklisted_image_url = $this->imageStyle->buildUrl($blacklisted_image_uri);
 
-    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions blacklist is setted: single value.');
-    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions blacklist is setted: single value.');
+    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions blacklist is set: single value.');
+    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions blacklist is set: single value.');
 
     $this->assertFalse($this->urlHasQueryParam($blacklisted_image_url), "Image style doesn't have File Version when it extension is in extensions blacklist: single value.");
     $this->assertTrue($this->urlHasQueryParam($blacklisted_image_url, 'itok'), 'Image style has itok when it extension is in extensions blacklist: single value.');
@@ -104,8 +104,8 @@ class ImageStyleTest extends FileVersionTestBase {
     $image_url = $this->imageStyle->buildUrl($image_uri);
     $blacklisted_image_url = $this->imageStyle->buildUrl($blacklisted_image_uri);
 
-    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions blacklist is setted: list.');
-    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions blacklist is setted: list.');
+    $this->assertTrue($this->urlHasQueryParam($image_url), 'Image style has File Version when extensions blacklist is set: list.');
+    $this->assertTrue($this->urlHasQueryParam($image_url, 'itok'), 'Image style has itok when extensions blacklist is set: list.');
 
     $this->assertFalse($this->urlHasQueryParam($blacklisted_image_url), "Image style doesn't have File Version when it extension is in extensions blacklist: list.");
     $this->assertTrue($this->urlHasQueryParam($blacklisted_image_url, 'itok'), 'Image style has itok when it extension is in extensions blacklist: list.');
