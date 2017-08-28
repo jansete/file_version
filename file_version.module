@@ -20,7 +20,12 @@ function file_version_file_url_alter(&$uri) {
 
   $scheme = $fileSystem->uriScheme($uri);
 
-  if ($scheme) {
+  // Data URIs don't support query string.
+  // @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+  if ($scheme && $scheme == 'data') {
+    return;
+  }
+  elseif ($scheme) {
     if (
           !$fileVersion->isProtocolByPassed($scheme)
       &&  $wrapper = $streamWrapperManager->getViaUri($uri)
